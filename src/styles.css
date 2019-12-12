@@ -1,0 +1,221 @@
+body {
+    font-family: 'Catamaran', sans-serif;
+    background: rgb(146, 98, 144);
+}
+nav {
+    height: 50px;
+    display: flex;
+    align-items: flex-end;
+}
+h3 {
+    /* color: rgb(84, 82, 102); */
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-left: 20px;
+    margin-bottom: 8px;
+}
+h3 span {
+    color: rgb(246, 184, 221);
+}
+h3 i {
+    font-size: 30px; /* doesn't work */
+    margin-right: 8px;
+    color: rgb(246, 184, 221);
+}
+h2 {
+    color: rgb(246, 184, 221);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgb(246, 184, 221);
+}
+h1 {
+    margin: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    padding: 20px;
+    color: rgb(99, 66, 47);
+    /* background: rgb(245, 222, 205); */
+    background: rgb(249, 239, 233);
+}
+input {
+    font-family: 'Catamaran', sans-serif;
+    box-sizing: border-box;
+    padding: 10px 14px;
+}
+button {
+    font-family: 'Catamaran', sans-serif;
+}
+
+.grid-container {
+    display: grid;
+    height: calc(100vh - 50px);
+    grid-template: 1fr / 300px 1fr 20px;
+}
+aside {
+    flex: 0 1 300px;
+    border-right: 1px solid rgb(202, 202, 202);
+    padding: 20px 24px;
+}
+.projects {
+    color: rgb(74, 39, 72);
+    padding: 10px 0;
+}
+.projects li {
+    padding: 5px 14px;
+}
+.projects li:hover {
+    color: rgb(74, 39, 72);
+    background: rgb(240, 240, 240);
+    border-radius: 2px;
+}
+.selected {
+    color: white;
+    font-weight: 700;
+}
+.add-project-btn {
+    color: rgb(246, 184, 221);
+    background: none;
+    margin-left: 5px;
+    border: none;
+    cursor: pointer;
+}
+.add-project-btn:hover {
+    color: white;
+}
+.new-project-input {
+    color: rgb(246, 184, 221);
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgb(246, 184, 221);
+    outline: none;
+    padding: 0px;
+    margin-left: 9px;
+}
+.new-project-input::placeholder {
+    color: rgb(74, 39, 72);
+}
+
+main {
+    background: white;
+    /* border: 1px solid rgb(202, 202, 202); */
+}
+main:after {
+    content: '';
+    background: white;
+    display: block;
+}
+
+.tasks {
+    padding: 10px 20px;
+}
+.tasks li {
+    padding: 10px 14px;
+}
+.tasks li:not(:last-child) {
+    border-bottom: 1px solid rgb(202, 202, 202);
+}
+.task-item {
+    display: grid;
+    grid-template: auto / 24px 1fr;
+}
+.task-info {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    position: relative;
+}
+.task-duedate {
+    margin-left: auto;
+    margin-right: 10px;
+    align-self: flex-start;
+}
+.task-expand-btn {
+    position: absolute;
+    left: -50px;
+    margin-right: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.task-expand-btn:hover {
+    color: rgb(40, 94, 211);
+}
+.rotate-chevron {
+    transform: rotate(90deg);
+}
+.task-delete-btn {
+    cursor: pointer;
+}
+.task-delete-btn:hover {
+    color: red;
+}
+.task-description {
+    grid-column: 1 / span 2;
+    font-family: 'Montserrat', sans-serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 14px;
+    max-height: 100%;
+    margin-top: 4px;
+    padding: 0 12px;
+    background: #f1f1f1;
+    transition: max-height 0.2s ease-out;
+}
+.task-description::before,
+.task-description::after {
+    content: '';
+    display: block;
+    padding-bottom: 8px;
+}
+.hidden {
+    max-height: 0;
+    overflow: hidden;
+}
+
+.new-task-form {
+    padding: 20px;
+}
+.new-task-row1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.new-task-name {
+    width: calc(100% - 180px);
+}
+.new-task-duedate {
+    width: 140px;
+}
+.new-task-desc {
+    width: 100%;
+}
+
+.add-task-btn {
+    margin-top: 10px;
+    color: rgb(249, 239, 233);
+    font-weight: 700;
+    padding: 10px 14px;
+    background: rgb(99, 66, 47);
+    border: none;
+    border-radius: 4px;
+}
+.add-task-btn:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.delete-project-btn {
+    margin-left: 20px;
+    padding: 0;
+    background: none;
+    border: none;
+    color: rgb(99, 66, 47);
+    text-decoration: underline;
+}
+.delete-project-btn:hover {
+    color: rgb(245, 222, 205);
+}
