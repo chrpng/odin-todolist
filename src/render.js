@@ -44,7 +44,7 @@ const render = (() => {
             taskLi.classList.add('task-item');
 
             const check = document.createElement('span');
-            if(task.done) {
+            if(task.getDone()) {
                 check.classList.add('fas', 'fa-check-circle')
             } else {
                 check.classList.add('far', 'fa-circle');
@@ -53,11 +53,11 @@ const render = (() => {
                 ((el, ...cls) => {
                     cls.forEach(cl => el.classList.toggle(cl))
                 })(check, 'far', 'fas', 'fa-circle', 'fa-check-circle');
-                console.log(ProjectList.getSelectedProject().getTask(task.id));
-                console.log(ProjectList.getSelectedProject().getTask(task.id).getDone());
+                //console.log(ProjectList.getSelectedProject().getTask(task.id));
+                //console.log(ProjectList.getSelectedProject().getTask(task.id).getDone());
                 ProjectList.getSelectedProject().getTask(task.id).toggleDone();
-                console.log(ProjectList.getSelectedProject().getTask(task.id));
-                console.log(ProjectList.getSelectedProject().getTask(task.id).getDone());
+                //console.log(ProjectList.getSelectedProject().getTask(task.id).getDone());
+                //console.log(ProjectList.getSelectedProject().getTask(task.id));
             })
 
             const info = document.createElement('div');

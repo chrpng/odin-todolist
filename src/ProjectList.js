@@ -1,37 +1,52 @@
-const taskFactory = (name, description = 'none', dueDate, id, priority = false, done = false) => {
-    if(!id) id = String(Date.now());
-    const toggleDone = () => {
-        console.log('before toggle: ' + done);
-        done = !done;
-        ProjectList.saveToStorage();
-        console.log('toggled! ' + done);
-    };
-    const getDone = () => {
-        return done;
+// const taskFactory = (name, description = 'none', dueDate, id, priority = false, done = false) => {
+//     if(!id) id = String(Date.now());
+//     // let done = doneArg;
+//     // const toggleDone = () => {
+//     //     console.log('before toggle: ' + done);
+//     //     console.log(ProjectList.getSelectedProject().tasks);
+//     //     done = !done;
+//     //     ProjectList.saveToStorage();
+//     //     console.log('toggled! ' + done);
+//     //     console.log(ProjectList.getSelectedProject().tasks);
+//     // };
+//     const togglePriority = () => priority = !priority;
+//     return {
+//         name,
+//         description,
+//         id,
+//         dueDate,
+//         priority,
+//         done,
+//         toggleDone() {
+//             this.done = !this.done;
+//         },
+//         togglePriority
+//     };
+// }
+class TaskClass {
+    constructor(name, description = 'none', dueDate, id, priority = false, doneArg = false) {
+        this.name = name;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.priority = priority;
+        this.id = id ? id : String(Date.now());
+        let done = doneArg;
+        this.getDone = () => {
+            return done;
+        }
+        this.toggleDone = () => {
+            console.log(this);
+            done = !done;
+            ProjectList.saveToStorage();
+        }
     }
-    const togglePriority = () => priority = !priority;
-    return {
-        name,
-        description,
-        id,
-        dueDate,
-        priority,
-        done,
-        toggleDone,
-        getDone,
-        togglePriority
-    };
-    
 }
 
 const projectFactory = (name, id, tasks = []) => {
     if(!id) id = String(Date.now());
-    console.log(tasks);
     if(tasks.length > 0) {
-        console.log('time to map tasks!');
         tasks = tasks.map(task => {
-            //console.log(task.done);
-            return taskFactory(task.name, task.description, task.dueDate, task.id, task.priority, task.done);
+            return new TaskClass(task.name, task.description, task.dueDate, task.id, task.priority, task.done);
         })
     }
     const getTasks = () => {
@@ -41,7 +56,7 @@ const projectFactory = (name, id, tasks = []) => {
         return tasks.find(task => task.id === id);
     }
     const addTask = (...args) => {
-        const newTask = taskFactory(...args);
+        const newTask = new TaskClass(...args);
         tasks.push(newTask);
         ProjectList.saveToStorage(); //not ideal that saveToStorage is revealed for these two saves?
     };
@@ -94,10 +109,18 @@ const ProjectList = (function() {
         //without this step you'll just have the getTasks() function without a tasks array to reference
         const storageProjects = projects.map(project => {
             const tasks = project.getTasks();
-            return { ...project, tasks }
+            const storageTasks = tasks.map(task => {
+                const done = task.getDone()
+                //console.log(task);
+                //console.log(done);
+                return { ...task, done }
+            })
+            return { ...project, tasks: storageTasks }
         })
-        //console.log(storageProjects);
+        console.log('storing...')
+        console.log(storageProjects);
         localStorage.setItem(LOCAL_STORAGE_PROJECT_KEY, JSON.stringify(storageProjects));
+        //console.log(JSON.stringify(storageProjects));
     }
     function getProjects() {
         return projects;
