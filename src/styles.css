@@ -219,3 +219,11 @@ main:after {
 .delete-project-btn:hover {
     color: rgb(245, 222, 205);
 }
+
+@media  (max-width: 768px) {
+    .grid-container {
+        display: block;
+        /* height: calc(100vh - 50px);
+        grid-template: 1fr / 300px 1fr 20px; */
+    }
+}
