@@ -32,8 +32,9 @@ const submitTaskForm = (e) => {
     }
     const name = newTaskName.value;
     const dueDate = newTaskDueDate.value;
+    const desc = newTaskDesc.value;
     const currentProject = ProjectList.getSelectedProject();
-    currentProject.addTask(name, 'filler', dueDate);
+    currentProject.addTask(name, desc, dueDate);
     const tasks = currentProject.getTasks();
     render.renderTasks(tasks, tasksContainer);
     newTaskName.value = null;
@@ -82,6 +83,7 @@ newProjectInputBtn.addEventListener('click', submitProjectForm);
 // const newTaskForm = document.querySelector('.new-task-form');
 const newTaskName = document.querySelector('.new-task-name');
 const newTaskDueDate = document.querySelector('.new-task-duedate');
+const newTaskDesc = document.querySelector('.new-task-desc');
 
 // newTaskForm.addEventListener('submit', submitTaskForm);
 const addTaskBtn = document.querySelector('.add-task-btn');

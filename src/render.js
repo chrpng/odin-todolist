@@ -64,11 +64,13 @@ const render = (() => {
             info.classList.add('task-info');
             
             const expandBtn = document.createElement('i');
-            expandBtn.classList.add('fas', 'fa-chevron-right', 'task-expand-btn');
-            expandBtn.addEventListener('click', () => {
-                description.classList.toggle('hidden');
-                expandBtn.classList.toggle('rotate-chevron');
-            })
+            if(task.description) {
+                expandBtn.classList.add('fas', 'fa-chevron-right', 'task-expand-btn');
+                expandBtn.addEventListener('click', () => {
+                    description.classList.toggle('hidden');
+                    expandBtn.classList.toggle('rotate-chevron');
+                })
+            }
 
             const name = document.createElement('span');
             name.classList.add('task-name');
