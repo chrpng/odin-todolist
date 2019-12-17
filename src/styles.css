@@ -215,6 +215,7 @@ main:after {
     border: none;
     color: rgb(99, 66, 47);
     text-decoration: underline;
+    cursor: pointer;
 }
 .delete-project-btn:hover {
     color: rgb(245, 222, 205);
@@ -225,5 +226,12 @@ main:after {
         display: block;
         /* height: calc(100vh - 50px);
         grid-template: 1fr / 300px 1fr 20px; */
+    }
+    .new-task-row1 {
+        display: block;
+    }
+    .new-task-name,
+    .new-task-duedate {
+        width: 100%;
     }
 }

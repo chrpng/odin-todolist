@@ -7,7 +7,7 @@ const render = (() => {
         const projects = ProjectList.getProjects();
         
         const projectsFrag = document.createDocumentFragment();
-        !!projects && projects.forEach(project => {
+        projects.forEach(project => {
             const projectLi = document.createElement('li');
 
             projectLi.dataset.projectId = project.id;
@@ -31,6 +31,7 @@ const render = (() => {
 
     const renderTasks = (container) => {
         while(container.lastChild) { container.removeChild(container.lastChild); }
+        //Only atttempt to render tasks if there is a project
         const hasProject = !!ProjectList.getSelectedProject();
         const tasks = hasProject && ProjectList.getSelectedProject().getTasks();
 

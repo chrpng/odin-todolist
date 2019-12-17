@@ -40,21 +40,13 @@ const deleteProjectHandler = () => {
     ProjectList.deleteProject(selectedProjectID);
 
     const projects = ProjectList.getProjects();
-    if(!projects) {
-        ProjectList.selectProject(null);
+    if(projects.length === 0) {
+        ProjectList.selectProject('');
     } else {
         ProjectList.selectProject(projects[0].id);
     }
     render.renderProjects(projectsContainer, tasksContainer);
 }
-
-// const attachProjectListeners = () => {
-//     Array.from(projectsContainer.getElementsByTagName('li')).forEach(project => {
-//         project.addEventListener('click', selectProjectHandler);
-//     });
-// }
-
-// attachProjectListeners();
 
 const newProjectForm = document.querySelector('.new-project-form');
 const newProjectInput = document.querySelector('.new-project-input');

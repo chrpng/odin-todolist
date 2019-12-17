@@ -70,7 +70,6 @@ const ProjectList = (function() {
     // Initializing projects array
     //
     if(localStorageTest) {
-        console.log(JSON.parse(localStorage.getItem(LOCAL_STORAGE_PROJECT_KEY)))
         projects = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PROJECT_KEY)) || [
             { name: 'Default', id: '1575573336754', tasks: [{ name: 'Example Task', description: 'filler', dueDate: '', priority: false, id: '1576284071949', done: false }] }
         ];
@@ -92,9 +91,6 @@ const ProjectList = (function() {
     //
     // Local Storage functions
     //
-    function getSelectedProjectIDKey() {
-        return LOCAL_STORAGE_SELECTED_PROJECT_ID_KEY;
-    }
     function getSelectedProjectID() {
         return selectedProjectID;
     }
@@ -129,6 +125,9 @@ const ProjectList = (function() {
     function addProject(name, id, tasks = []) {
         const newProject = projectFactory(name, id, tasks);
         projects.push(newProject);
+        if(projects.length === 1) {
+            selectProject(newProject.id);
+        }
         saveToStorage();
     }
     function deleteProject(id) {
