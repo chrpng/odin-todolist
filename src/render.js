@@ -2,16 +2,12 @@ import { selectProjectHandler } from './EventHandlers';
 import ProjectList from './ProjectList';
 
 const render = (() => {
-    const initialRender = (projectsContainer, tasksContainer) => {
-        renderProjects(projectsContainer, tasksContainer);
-    }
-
     const renderProjects = (container, tContainer) => {
         while(container.lastChild) { container.removeChild(container.lastChild); }
+        const projects = ProjectList.getProjects();
         
         const projectsFrag = document.createDocumentFragment();
-        const projects = ProjectList.getProjects();
-        projects.forEach(project => {
+        !!projects && projects.forEach(project => {
             const projectLi = document.createElement('li');
 
             projectLi.dataset.projectId = project.id;
@@ -22,8 +18,7 @@ const render = (() => {
                 ProjectList.selectProject(id);
 
                 renderSelectedProject(id);
-                const tasks = ProjectList.getSelectedProject().getTasks();
-                renderTasks(tasks, tContainer);
+                renderTasks(tContainer);
             });
             projectsFrag.append(projectLi);
         })
@@ -31,15 +26,16 @@ const render = (() => {
         
         const selectedID = ProjectList.getSelectedProjectID();
         renderSelectedProject(selectedID);
-        const tasks = ProjectList.getSelectedProject().getTasks();
-        renderTasks(tasks, tContainer);
+        renderTasks(tContainer);
     }
 
-    const renderTasks = (tasks, container) => {
+    const renderTasks = (container) => {
         while(container.lastChild) { container.removeChild(container.lastChild); }
-        
+        const hasProject = !!ProjectList.getSelectedProject();
+        const tasks = hasProject && ProjectList.getSelectedProject().getTasks();
+
         const tasksFrag = document.createDocumentFragment();
-        tasks.forEach(task => {
+        hasProject && tasks.forEach(task => {
             const taskLi = document.createElement('li');
             taskLi.classList.add('task-item');
 
@@ -53,11 +49,7 @@ const render = (() => {
                 ((el, ...cls) => {
                     cls.forEach(cl => el.classList.toggle(cl))
                 })(check, 'far', 'fas', 'fa-circle', 'fa-check-circle');
-                //console.log(ProjectList.getSelectedProject().getTask(task.id));
-                //console.log(ProjectList.getSelectedProject().getTask(task.id).getDone());
                 ProjectList.getSelectedProject().getTask(task.id).toggleDone();
-                //console.log(ProjectList.getSelectedProject().getTask(task.id).getDone());
-                //console.log(ProjectList.getSelectedProject().getTask(task.id));
             })
 
             const info = document.createElement('div');
@@ -86,7 +78,7 @@ const render = (() => {
                 const newProject = ProjectList.getSelectedProject();
                 newProject.deleteTask(task.id);
                 const newTasks = newProject.getTasks();
-                renderTasks(newTasks, container);
+                renderTasks(container);
             });
             
             info.append(expandBtn, name, dueDate, deleteBtn);
@@ -113,7 +105,6 @@ const render = (() => {
     }
 
     return {
-        initialRender,
         renderProjects,
         renderTasks,
         renderSelectedProject
