@@ -93,19 +93,49 @@ const projectFactory = (name, id, tasks = []) => {
 const ProjectList = (function() {
     const LOCAL_STORAGE_PROJECT_KEY = 'taskmaster.projects';
     const LOCAL_STORAGE_SELECTED_PROJECT_ID_KEY = 'taskmaster.selectedProjectID';
+    let projects = [];
+    let selectedProjectID = '';
+    //
+    //
+    //LOOK AT THIS LINE, SET IT BACK TO localStorageTest()
+    //
+    //
+    const localStorageTest = (function() {
+        try {
+            console.log('about to try to set localStorage');
+            localStorage.setItem('testset', 'testset');
+            localStorage.setItem('testremove', 'testremove');
+            localStorage.removeItem('testremove');
+            console.log('about to return true!');
+            return true;
+        } catch(e) {
+            return false;
+        }
+    })();
 
-    let projects = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PROJECT_KEY)) || [
-        { name: 'Work', id: '1' },
-        { name: 'Personal', id: '2' },
-        { name: 'Fitness', id: '3' }
-    ];
+    if(localStorageTest) {
+        //[{"name":"Default","id":"1575573336754","tasks":[{"name":"work 1","description":"filler","dueDate":"","priority":false,"id":"1576284071949","done":false}]},{"name":"Personal","id":"1576083065683","tasks":[]},{"name":"Groceries","id":"1576083218212","tasks":[{"name":"task 1","description":"filler","dueDate":"2019-12-14","priority":false,"id":"1576279722670","done":true},{"name":"task 2","description":"filler","dueDate":"","priority":false,"id":"1576279725227","done":false},{"name":"task 3","description":"filler","dueDate":"2019-12-13","priority":false,"id":"1576279729574","done":false}]},{"name":"Test","id":"1576537223145","tasks":[]}]
+        console.log(JSON.parse(localStorage.getItem(LOCAL_STORAGE_PROJECT_KEY)));
+        projects = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PROJECT_KEY)) || [
+            { name: 'Default', id: '1575573336754', tasks: [{ name: 'Example Task', description: 'filler', dueDate: '', priority: false, id: '1576284071949', done: false }] }
+        ];
+        console.log(projects);
+        //"1576537223145"
+        selectedProjectID = JSON.parse(localStorage.getItem(LOCAL_STORAGE_SELECTED_PROJECT_ID_KEY)) || '1575573336754';
+    } else {
+        console.log('local Storage Test failed');
+        projects = [
+            { name: 'Default', id: '1575573336754', tasks: [{ name:'work 1', description: 'filler', dueDate: '', priority: false, id: '1576284071949', done: false }] },
+            { name: 'Personal', id: '1576083065683', tasks: [] },
+            { name: 'Groceries', id: '1576083218212', tasks: [{ name: 'task 1', description: 'filler', dueDate: '2019-12-14', priority: false, id: '1576279722670', done: true }, { name: 'task 2', description: 'filler', dueDate: '', priority: false, id: '1576279725227', done: false }, { name: 'task 3', description: 'filler', dueDate: '2019-12-13', priority: false, id: '1576279729574', done:false }] }
+        ];
+        selectedProjectID = '1576083218212';
+    }
     projects = projects.map(project => {
         //the 3rd parameter is only used when retrieving the projects from storage
         return projectFactory(project.name, project.id, project.tasks);
     })
 
-    let selectedProjectID = JSON.parse(localStorage.getItem(LOCAL_STORAGE_SELECTED_PROJECT_ID_KEY));
-    //let selectedProjectID = 1;
 
     // Local Storage functions
     function getSelectedProjectIDKey() {
@@ -123,17 +153,21 @@ const ProjectList = (function() {
     function saveToStorage() {
         //projects.tasks isn't normally accessible due to closure, so a new object storageProjects is created specifically for storage so the tasks can be referenced when the project is taken out of storage
         //without this step you'll just have the getTasks() function without a tasks array to reference
-        const storageProjects = projects.map(project => {
-            const tasks = project.getTasks();
-            const storageTasks = tasks.map(task => {
-                const done = task.getDone()
-                return { ...task, done }
+        if(localStorageTest) {
+            const storageProjects = projects.map(project => {
+                const tasks = project.getTasks();
+                const storageTasks = tasks.map(task => {
+                    const done = task.getDone()
+                    return { ...task, done }
+                })
+                return { ...project, tasks: storageTasks }
             })
-            return { ...project, tasks: storageTasks }
-        })
-        console.log('storing...')
-        console.log(storageProjects);
-        localStorage.setItem(LOCAL_STORAGE_PROJECT_KEY, JSON.stringify(storageProjects));
+            console.log('storing...')
+            console.log(storageProjects);
+            localStorage.setItem(LOCAL_STORAGE_PROJECT_KEY, JSON.stringify(storageProjects));
+        } else {
+            console.log('no local storage!');
+        }
         //console.log(JSON.stringify(storageProjects));
     }
     function getProjects() {
@@ -155,7 +189,7 @@ const ProjectList = (function() {
     }
 
     return {
-        getSelectedProjectIDKey,
+        //getSelectedProjectIDKey,
         getSelectedProjectID,
         getSelectedProject,
         saveToStorage,
