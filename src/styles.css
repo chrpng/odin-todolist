@@ -103,11 +103,6 @@ main {
     background: white;
     /* border: 1px solid rgb(202, 202, 202); */
 }
-main:after {
-    content: '';
-    background: white;
-    display: block;
-}
 
 .tasks {
     padding: 10px 20px;
@@ -226,6 +221,12 @@ main:after {
         display: block;
         /* height: calc(100vh - 50px);
         grid-template: 1fr / 300px 1fr 20px; */
+    }
+    h1 {
+        margin: 0;
+    }
+    main {
+        padding-bottom: 20px;
     }
     .new-task-row1 {
         display: block;

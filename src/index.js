@@ -26,8 +26,12 @@ const submitTaskForm = (e) => {
         alert('You need a task name!');
         return;
     }
-
-    const currentProject = ProjectList.getSelectedProject();
+    
+    let currentProject = ProjectList.getSelectedProject();
+    if(!currentProject) {
+        ProjectList.addProject('Default');
+        currentProject = ProjectList.getSelectedProject();
+    }
     currentProject.addTask(newTaskName.value, newTaskDesc.value, newTaskDueDate.value);
     render.renderTasks(tasksContainer);
     newTaskName.value = null;
