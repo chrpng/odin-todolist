@@ -1,4 +1,3 @@
-import { selectProjectHandler } from './EventHandlers';
 import ProjectList from './ProjectList';
 
 const render = (() => {
@@ -53,6 +52,19 @@ const render = (() => {
                 ProjectList.getSelectedProject().getTask(task.id).toggleDone();
             })
 
+            const star = document.createElement('span');
+            if(task.getPriority()) {
+                star.classList.add('fas', 'fa-star')
+            } else {
+                star.classList.add('far', 'fa-star');
+            }
+            star.addEventListener('click', () => {
+                ((el, ...cls) => {
+                    cls.forEach(cl => el.classList.toggle(cl))
+                })(star, 'far', 'fas');
+                ProjectList.getSelectedProject().getTask(task.id).togglePriority();
+            })
+
             const info = document.createElement('div');
             info.classList.add('task-info');
             
@@ -78,7 +90,6 @@ const render = (() => {
             deleteBtn.addEventListener('click', () => {
                 const newProject = ProjectList.getSelectedProject();
                 newProject.deleteTask(task.id);
-                const newTasks = newProject.getTasks();
                 renderTasks(container);
             });
             
@@ -88,7 +99,7 @@ const render = (() => {
             description.classList.add('task-description', 'hidden');
             description.innerText = task.description;
 
-            taskLi.append(check, info, description);
+            taskLi.append(check, star, info, description);
             tasksFrag.append(taskLi);
         })
         container.append(tasksFrag);

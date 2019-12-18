@@ -115,7 +115,7 @@ main {
 }
 .task-item {
     display: grid;
-    grid-template: auto / 24px 1fr;
+    grid-template: auto / 24px 24px 1fr;
 }
 .task-info {
     flex-grow: 1;
@@ -131,7 +131,7 @@ main {
 }
 .task-expand-btn {
     position: absolute;
-    left: -50px;
+    left: -64px;
     margin-right: 6px;
     cursor: pointer;
     transition: all 0.2s;

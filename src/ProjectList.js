@@ -1,17 +1,23 @@
 class TaskClass {
-    constructor(name, description = 'none', dueDate, id, priority = false, doneArg = false) {
+    constructor(name, description = 'none', dueDate, id, priority = false, done = false) {
         this.name = name;
         this.description = description;
         this.dueDate = dueDate;
-        this.priority = priority;
         this.id = id ? id : String(Date.now());
-        let done = doneArg;
+        let isPriority = priority;
+        let isDone = done;
+        this.getPriority = () => {
+            return isPriority;
+        }
         this.getDone = () => {
-            return done;
+            return isDone;
+        }
+        this.togglePriority = () => {
+            isPriority = !isPriority;
+            ProjectList.saveToStorage();
         }
         this.toggleDone = () => {
-            console.log(this);
-            done = !done;
+            isDone = !isDone;
             ProjectList.saveToStorage();
         }
     }
@@ -21,7 +27,7 @@ const projectFactory = (name, id, tasks = []) => {
     if(!id) id = String(Date.now());
     if(tasks.length > 0) {
         tasks = tasks.map(task => {
-            return new TaskClass(task.name, task.description, task.dueDate, task.id, task.priority, task.done);
+            return new TaskClass(task.name, task.description, task.dueDate, task.id, task.isPriority, task.isDone);
         })
     }
     const getTasks = () => {
@@ -71,15 +77,15 @@ const ProjectList = (function() {
     //
     if(localStorageTest) {
         projects = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PROJECT_KEY)) || [
-            { name: 'Default', id: '1575573336754', tasks: [{ name: 'Example Task', description: 'filler', dueDate: '', priority: false, id: '1576284071949', done: false }] }
+            { name: 'Default', id: '1575573336754', tasks: [{ name: 'Example Task', description: 'filler', dueDate: '', isPriority: false, id: '1576284071949', isDone: false }] }
         ];
         selectedProjectID = JSON.parse(localStorage.getItem(LOCAL_STORAGE_SELECTED_PROJECT_ID_KEY)) || '1575573336754';
     } else {
         console.log('localStorageTest failed');
         projects = [
-            { name: 'Default', id: '1575573336754', tasks: [{ name:'work 1', description: 'filler', dueDate: '', priority: false, id: '1576284071949', done: false }] },
+            { name: 'Default', id: '1575573336754', tasks: [{ name:'work 1', description: 'filler', dueDate: '', isPriority: false, id: '1576284071949', isDone: false }] },
             { name: 'Personal', id: '1576083065683', tasks: [] },
-            { name: 'Groceries', id: '1576083218212', tasks: [{ name: 'task 1', description: 'filler', dueDate: '2019-12-14', priority: false, id: '1576279722670', done: true }, { name: 'task 2', description: 'filler', dueDate: '', priority: false, id: '1576279725227', done: false }, { name: 'task 3', description: 'filler', dueDate: '2019-12-13', priority: false, id: '1576279729574', done:false }] }
+            { name: 'Groceries', id: '1576083218212', tasks: [{ name: 'task 1', description: 'filler', dueDate: '2019-12-14', isPriority: false, id: '1576279722670', isDone: true }, { name: 'task 2', description: 'filler', dueDate: '', isPriority: false, id: '1576279725227', isDone: false }, { name: 'task 3', description: 'filler', dueDate: '2019-12-13', isPriority: false, id: '1576279729574', isDone:false }] }
         ];
         selectedProjectID = '1576083218212';
     }
@@ -107,8 +113,10 @@ const ProjectList = (function() {
             const storageProjects = projects.map(project => {
                 const tasks = project.getTasks();
                 const storageTasks = tasks.map(task => {
-                    const done = task.getDone()
-                    return { ...task, done }
+                    //same thing done for projects.tasks must be done for task.isPriority and task.isDone
+                    const isPriority = task.getPriority()
+                    const isDone = task.getDone()
+                    return { ...task, isPriority, isDone }
                 })
                 return { ...project, tasks: storageTasks }
             })
@@ -121,6 +129,9 @@ const ProjectList = (function() {
     //
     function getProjects() {
         return projects;
+    }
+    function isProjects() {
+        return projects.length > 0;
     }
     function addProject(name, id, tasks = []) {
         const newProject = projectFactory(name, id, tasks);
@@ -144,6 +155,7 @@ const ProjectList = (function() {
         getSelectedProject,
         saveToStorage,
         getProjects,
+        isProjects,
         addProject,
         deleteProject,
         selectProject,
