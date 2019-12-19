@@ -42,6 +42,7 @@ const render = (() => {
             const check = document.createElement('span');
             if(task.getDone()) {
                 check.classList.add('fas', 'fa-check-circle')
+                taskLi.classList.add('done');
             } else {
                 check.classList.add('far', 'fa-circle');
             }
@@ -49,12 +50,13 @@ const render = (() => {
                 ((el, ...cls) => {
                     cls.forEach(cl => el.classList.toggle(cl))
                 })(check, 'far', 'fas', 'fa-circle', 'fa-check-circle');
+                taskLi.classList.toggle('done');
                 ProjectList.getSelectedProject().getTask(task.id).toggleDone();
             })
 
             const star = document.createElement('span');
             if(task.getPriority()) {
-                star.classList.add('fas', 'fa-star')
+                star.classList.add('fas', 'fa-star');
             } else {
                 star.classList.add('far', 'fa-star');
             }

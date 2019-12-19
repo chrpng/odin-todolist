@@ -216,6 +216,36 @@ main {
     color: rgb(245, 222, 205);
 }
 
+.fa-star {
+    color: rgb(185, 185, 185);
+}
+.fas.fa-star {
+    color: rgb(245, 221, 7);
+}
+.done .fas.fa-star {
+    color: rgb(180, 180, 180);
+}
+
+/*
+    Done
+*/
+.done {
+    opacity: 0.3;
+}
+.done:after {
+    content: '';
+    width: 100%;
+    height: 1px;
+    background-color: black;
+    opacity: 0.5;
+    position: relative;
+    top: -0.6rem;
+    left: -20px;
+}
+.done.priority:after {
+    background-color: red;
+}
+
 @media  (max-width: 768px) {
     .grid-container {
         display: block;
