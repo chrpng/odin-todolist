@@ -26,6 +26,7 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
+    "date-fns": "^2.8.1",
     "flatpickr": "^4.6.3"
   }
 }

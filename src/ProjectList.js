@@ -1,8 +1,10 @@
+import { formatRelative, parseISO } from 'date-fns';
+
 class TaskClass {
     constructor(name, description = 'none', dueDate, id, priority = false, done = false) {
         this.name = name;
         this.description = description;
-        this.dueDate = dueDate;
+        this.dueDate = dueDate ? formatRelative(parseISO(dueDate), new Date()) : dueDate;
         this.id = id ? id : String(Date.now());
         let isPriority = priority;
         let isDone = done;
